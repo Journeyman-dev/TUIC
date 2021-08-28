@@ -127,7 +127,7 @@ int main()
 
     /* Create the batch (tile rendering data container) */
     TuiDetailMode detail_mode = TUI_DETAIL_MODE_G8_C4_SPARSE; // same as (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_4 | TUI_DETAIL_FLAG_LAYOUT_SPARSE)
-    TuiBatch batch = tuiBatchCreate(detail_mode, tiles_wide, tiles_tall);
+    TuiBatch batch = tuiBatchCreateSparse(detail_mode, tiles_wide, tiles_tall, TUI_FALSE, 0);
 
     /* Render initial clear color to window. */
     tuiWindowClearColor(window, 0, 0, 0, 255); //black

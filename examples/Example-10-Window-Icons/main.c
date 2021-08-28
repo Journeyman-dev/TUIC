@@ -43,7 +43,7 @@ int main()
     TuiImage window_icon_image = tuiImageCreatePNG("sushi.png");
 
     /* Create the window. */
-    const char* window_title = "Example 9";
+    const char* window_title = "Example 10";
     TuiWindow window = tuiWindowCreate(window_width, window_height, window_title, TUI_NULL); 
 
     /* Set the window icon. */

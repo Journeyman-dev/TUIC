@@ -128,7 +128,7 @@ int main()
     /* Create the window. */
     TuiWindowCreateInfo window_create_info = tuiWindowCreateInfo();
     window_create_info.resizable = TUI_TRUE;
-    const char* window_title = "Example 6";
+    const char* window_title = "Example 8";
     TuiWindow window = tuiWindowCreate(window_width, window_height, window_title, &window_create_info);
 
     /* Set all of the custom callbacks. */

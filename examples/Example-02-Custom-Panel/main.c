@@ -77,7 +77,7 @@ int main()
 
     /* Create the batch */
     TuiDetailMode detail_mode = TUI_DETAIL_MODE_G16_C24_FULL;
-    TuiBatch batch = tuiBatchCreate(detail_mode, kTilesTall, kTilesWide);
+    TuiBatch batch = tuiBatchCreateFull(detail_mode, kTilesTall, kTilesWide, 0);
 
     /* Fill the batch with data */
     for (int tile_x = 0; tile_x < kTilesWide; tile_x++)

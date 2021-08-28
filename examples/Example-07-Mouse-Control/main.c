@@ -147,7 +147,7 @@ int main()
 
     /* Create the batch */
     TuiDetailMode detail_mode = TUI_DETAIL_MODE_G8_C4_SPARSE;
-    TuiBatch batch = tuiBatchCreate(detail_mode, kTilesTall, kTilesWide);
+    TuiBatch batch = tuiBatchCreateSparse(detail_mode, kTilesTall, kTilesWide, TUI_TRUE, 0);
 
     /* Create the window. */
     const char* window_title = "Example 7";

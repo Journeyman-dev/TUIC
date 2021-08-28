@@ -281,25 +281,6 @@ uint8_t* tuiWindowGetPixels(TuiWindow window, int* pixel_width, int* pixel_heigh
  */
 void tuiWindowDrawBatch(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiBatch batch);
 /*!
- * @brief Draw batch data to the framebuffer of a @ref TuiWindow.
- *
- * @param window The @ref TuiWindow.
- * @param atlas The @ref TuiAtlas.
- * @param palette The @ref TuiPalette.
- * @param detail_mode The @ref TuiDetailMode of the batch data.
- * @param tiles_wide The tiles wide of the batch data.
- * @param tiles_tall The tiles tall of the batch data.
- * @param sparse_index The sparse index of batches with sparsely indexed detail modes. If the batch data is not sparsely indexed, this is ignored.
- * @param batch_data A pointer to the batch data array.
- *
- * @errors Possible errors in order are @ref TUI_ERROR_NOT_INITIALIZED, @ref TUI_ERROR_NULL_WINDOW, @ref TUI_ERROR_NULL_BATCH_DATA, @ref TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS, and @ref TUI_ERROR_PALETTE_REQUIRED.  The first error that occurs will cause the function to immediatly return.
- *
- * @requirements This function must be called only while TUIC is initialized.
- *
- * @thread_safety This function must only be called on the same thread on which TUIC was initialized to ensure safe memory access.
- */
-void tuiWindowDrawBatchData(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiDetailMode detail_mode, int tiles_wide, int tiles_tall, size_t sparse_index, const uint8_t* batch_data);
-/*!
  * @brief Draw a @ref TuiBatch to the framebuffer of a @ref TuiWindow with a transformation.
  *
  * @param window The @ref TuiWindow.
@@ -318,29 +299,6 @@ void tuiWindowDrawBatchData(TuiWindow window, TuiAtlas atlas, TuiPalette palette
  * @thread_safety This function must only be called on the same thread on which TUIC was initialized to ensure safe memory access.
  */
 void tuiWindowDrawBatchTransformed(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiBatch batch, int left_x, int right_x, int top_y, int bottom_y);
-/*!
- * @brief Draw batch data to the framebuffer of a @ref TuiWindow with a transformation.
- *
- * @param window The @ref TuiWindow.
- * @param atlas The @ref TuiAtlas.
- * @param palette The @ref TuiPalette.
- * @param detail_mode The @ref TuiDetailMode of the batch data.
- * @param tiles_wide The tiles wide of the batch data.
- * @param tiles_tall The tiles tall of the batch data.
- * @param sparse_index The sparse index of batches with sparsely indexed detail modes. If the batch data is not sparsely indexed, this is ignored.
- * @param batch_data A pointer to the batch data array.
- * @param left_x The leftmost x pixel coordinate of the draw rect within the window.
- * @param right_x The rightmost x pixel coordinate of the draw rect within the window.
- * @param top_y The topmost y pixel coordinate of the draw rect within the window.
- * @param bottom_y The bottomost y pixel coordinate of the draw rect within the window.
- *
- * @errors Possible errors in order are @ref TUI_ERROR_NOT_INITIALIZED, @ref TUI_ERROR_NULL_WINDOW, @ref TUI_ERROR_NULL_BATCH_DATA, @ref TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS, and @ref TUI_ERROR_PALETTE_REQUIRED.  The first error that occurs will cause the function to immediatly return.
- *
- * @requirements This function must be called only while TUIC is initialized.
- *
- * @thread_safety This function must only be called on the same thread on which TUIC was initialized to ensure safe memory access.
- */
-void tuiWindowDrawBatchDataTransformed(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiDetailMode detail_mode, int tiles_wide, int tiles_tall, size_t sparse_index, const uint8_t* batch_data, int left_x, int right_x, int top_y, int bottom_y);
 /*!
  * @brief Draw a @ref TuiPanel to the framebuffer of a @ref TuiWindow.
  *

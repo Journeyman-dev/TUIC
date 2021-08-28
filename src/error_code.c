@@ -26,6 +26,7 @@
 const char* kTui_Error_Unknown_Name = TO_STRING(TUI_ERROR_UNKNOWN);
 const char* kTui_Error_None_Name = TO_STRING(TUI_ERROR_NONE);
 const char* kTui_Error_Already_Initialized_Name = TO_STRING(TUI_ERROR_ALREADY_INITIALIZED);
+const char* kTui_Error_Batch_Overflow_Name = TO_STRING(TUI_ERROR_BATCH_OVERFLOW);
 const char* kTui_Error_Graphics_Backend_Specific_Name = TO_STRING(TUI_ERROR_GRAPHICS_BACKEND_SPECIFIC);
 const char* kTui_Error_Dangling_Atlas_Name = TO_STRING(TUI_ERROR_DANGLING_ATLAS);
 const char* kTui_Error_Dangling_Cursor_Name = TO_STRING(TUI_ERROR_DANGLING_CURSOR);
@@ -47,9 +48,9 @@ const char* kTui_Error_Incompatible_Blend_Mode_Name = TO_STRING(TUI_ERROR_INCOMP
 const char* kTui_Error_Incompatible_Images_Name = TO_STRING(TUI_ERROR_INCOMPATIBLE_IMAGES);
 const char* kTui_Error_Invalid_Aspect_Ratio_Name = TO_STRING(TUI_ERROR_INVALID_ASPECT_RATIO);
 const char* kTui_Error_Invalid_Atlas_Type_Name = TO_STRING(TUI_ERROR_INVALID_ATLAS_TYPE);
-const char* kTui_Error_Invalid_Batch_Data_Dimensions_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS);
-const char* kTui_Error_Invalid_Batch_Dimensions_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_DIMENSIONS);
-const char* kTui_Error_Invalid_Batch_Setter_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_SETTER);
+const char* kTui_Error_Invalid_Batch_Function_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_FUNCTION);
+const char* kTui_Error_Invalid_Batch_Pixel_Dimensions_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_PIXEL_DIMENSIONS);
+const char* kTui_Error_Invalid_Batch_Tile_Dimensions_Name = TO_STRING(TUI_ERROR_INVALID_BATCH_TILE_DIMENSIONS);
 const char* kTui_Error_Invalid_Blend_Mode_Name = TO_STRING(TUI_ERROR_INVALID_BLEND_MODE);
 const char* kTui_Error_Invalid_Button_State_Name = TO_STRING(TUI_ERROR_INVALID_BUTTON_STATE);
 const char* kTui_Error_Invalid_Channel_Count_Name = TO_STRING(TUI_ERROR_INVALID_CHANNEL_COUNT);
@@ -79,7 +80,6 @@ const char* kTui_Error_Load_Image_Failure_Name = TO_STRING(TUI_ERROR_LOAD_IMAGE_
 const char* kTui_Error_Not_Initialized_Name = TO_STRING(TUI_ERROR_NOT_INITIALIZED);
 const char* kTui_Error_Null_Atlas_Name = TO_STRING(TUI_ERROR_NULL_ATLAS);
 const char* kTui_Error_Null_Batch_Name = TO_STRING(TUI_ERROR_NULL_BATCH);
-const char* kTui_Error_Null_Batch_Data_Name = TO_STRING(TUI_ERROR_NULL_BATCH_DATA);
 const char* kTui_Error_Null_Colors_Name = TO_STRING(TUI_ERROR_NULL_COLORS);
 const char* kTui_Error_Null_Cursor_Name = TO_STRING(TUI_ERROR_NULL_CURSOR);
 const char* kTui_Error_Null_Glyph_Bounding_Boxes_Name = TO_STRING(TUI_ERROR_NULL_GLYPH_BOUNDING_BOXES);
@@ -108,6 +108,7 @@ const char* kTui_Error_Unsupported_Window_Icons_Name = TO_STRING(TUI_ERROR_UNSUP
 const char* kTui_Error_Unknown_Description = "An unknown error has occured.";
 const char* kTui_Error_None_Description = "No error has occured.";
 const char* kTui_Error_Already_Initialized_Description = "TUIC has already been initialized.";
+const char* kTui_Error_Batch_Overflow_Description = "Too many tiles are set in a TuiBatch.";
 const char* kTui_Error_Graphics_Backend_Specific_Description = "A graphics backend specific error has occured.";
 const char* kTui_Error_Dangling_Atlas_Description = "Attempting to terminate TUIC with one or more dangling TuiAtlas.";
 const char* kTui_Error_Dangling_Cursor_Description = "Attempting to terminate TUIC with one or more dangling TuiCursor.";
@@ -129,9 +130,9 @@ const char* kTui_Error_Incompatible_Blend_Mode_Description = "The TuiBlendMode o
 const char* kTui_Error_Incompatible_Images_Description = "The images have incompatible channel counts.";
 const char* kTui_Error_Invalid_Aspect_Ratio_Description = "The aspect ratio is numerator or denominator must be greater than 0.";
 const char* kTui_Error_Invalid_Atlas_Type_Description = "The TuiAtlasType is invalid.";
-const char* kTui_Error_Invalid_Batch_Data_Dimensions_Description = "The tile dimensions of the batch data must be greater than 0.";
-const char* kTui_Error_Invalid_Batch_Dimensions_Description = "The tile dimensions of the TuiBatch must be greater than 0.";
-const char* kTui_Error_Invalid_Batch_Setter_Description = "A batch tile setter was used for the incorrrect TuiDetailMode.";
+const char* kTui_Error_Invalid_Batch_Function_Description = "A function was used on a TuiBatch that was intended for batches with a different TuiDetailMode.";
+const char* kTui_Error_Invalid_Batch_Pixel_Dimensions_Description = "The pixel dimensions of a TUiBatch are invalid.";
+const char* kTui_Error_Invalid_Batch_Tile_Dimensions_Description = "The tile dimensions of a TuiBatch are invalid.";
 const char* kTui_Error_Invalid_Blend_Mode_Description = "The TuiBlendMode is invalid.";
 const char* kTui_Error_Invalid_Button_State_Description = "The TuiButtonState is invalid.";
 const char* kTui_Error_Invalid_Channel_Count_Description = "The channel count is invalid.";
@@ -209,6 +210,8 @@ const char* tuiErrorCodeToString(TuiErrorCode error_code)
 		return kTui_Error_None_Name;
 	case TUI_ERROR_ALREADY_INITIALIZED:
 		return kTui_Error_Already_Initialized_Name;
+	case TUI_ERROR_BATCH_OVERFLOW:
+		return kTui_Error_Batch_Overflow_Name;
 	case TUI_ERROR_GRAPHICS_BACKEND_SPECIFIC:
 		return kTui_Error_Graphics_Backend_Specific_Name;
 	case TUI_ERROR_DANGLING_ATLAS:
@@ -251,12 +254,12 @@ const char* tuiErrorCodeToString(TuiErrorCode error_code)
 		return kTui_Error_Invalid_Aspect_Ratio_Name;
 	case TUI_ERROR_INVALID_ATLAS_TYPE:
 		return kTui_Error_Invalid_Atlas_Type_Name;
-	case TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS:
-		return kTui_Error_Invalid_Batch_Data_Dimensions_Name;
-	case TUI_ERROR_INVALID_BATCH_DIMENSIONS:
-		return kTui_Error_Invalid_Batch_Dimensions_Name;
-	case TUI_ERROR_INVALID_BATCH_SETTER:
-		return kTui_Error_Invalid_Batch_Setter_Name;
+	case TUI_ERROR_INVALID_BATCH_FUNCTION:
+		return kTui_Error_Invalid_Batch_Function_Name;
+	case TUI_ERROR_INVALID_BATCH_PIXEL_DIMENSIONS:
+		return kTui_Error_Invalid_Batch_Pixel_Dimensions_Name;
+	case TUI_ERROR_INVALID_BATCH_TILE_DIMENSIONS:
+		return kTui_Error_Invalid_Batch_Tile_Dimensions_Name;
 	case TUI_ERROR_INVALID_BLEND_MODE:
 		return kTui_Error_Invalid_Blend_Mode_Name;
 	case TUI_ERROR_INVALID_BUTTON_STATE:
@@ -315,8 +318,6 @@ const char* tuiErrorCodeToString(TuiErrorCode error_code)
 		return kTui_Error_Null_Atlas_Name;
 	case TUI_ERROR_NULL_BATCH:
 		return kTui_Error_Null_Batch_Name;
-	case TUI_ERROR_NULL_BATCH_DATA:
-		return kTui_Error_Null_Batch_Data_Name;
 	case TUI_ERROR_NULL_COLORS:
 		return kTui_Error_Null_Colors_Name;
 	case TUI_ERROR_NULL_CURSOR:  
@@ -383,6 +384,10 @@ TuiErrorCode tuiStringToErrorCode(const char* str)
 	else if (strcmp(str, kTui_Error_Already_Initialized_Name) == 0)
 	{
 		return TUI_ERROR_ALREADY_INITIALIZED;
+	}
+	else if (strcmp(str, kTui_Error_Batch_Overflow_Name) == 0)
+	{
+		return TUI_ERROR_BATCH_OVERFLOW;
 	}
 	else if (strcmp(str, kTui_Error_Graphics_Backend_Specific_Name) == 0)
 	{
@@ -468,17 +473,17 @@ TuiErrorCode tuiStringToErrorCode(const char* str)
 	{
 		return TUI_ERROR_INVALID_ATLAS_TYPE;
 	}
-	else if (strcmp(str, kTui_Error_Invalid_Batch_Data_Dimensions_Name) == 0)
+	else if (strcmp(str, kTui_Error_Invalid_Batch_Function_Name) == 0)
 	{
-		return TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS;
+		return TUI_ERROR_INVALID_BATCH_FUNCTION;
 	}
-	else if (strcmp(str, kTui_Error_Invalid_Batch_Dimensions_Name) == 0)
+	else if (strcmp(str, kTui_Error_Invalid_Batch_Pixel_Dimensions_Name) == 0)
 	{
-		return TUI_ERROR_INVALID_BATCH_DIMENSIONS;
+		return TUI_ERROR_INVALID_BATCH_PIXEL_DIMENSIONS;
 	}
-	else if (strcmp(str, kTui_Error_Invalid_Batch_Setter_Name) == 0)
+	else if (strcmp(str, kTui_Error_Invalid_Batch_Tile_Dimensions_Name) == 0)
 	{
-		return TUI_ERROR_INVALID_BATCH_SETTER;
+		return TUI_ERROR_INVALID_BATCH_TILE_DIMENSIONS;
 	}
 	else if (strcmp(str, kTui_Error_Invalid_Blend_Mode_Name) == 0)
 	{
@@ -596,10 +601,6 @@ TuiErrorCode tuiStringToErrorCode(const char* str)
 	{
 		return TUI_ERROR_NULL_BATCH;
 	}
-	else if (strcmp(str, kTui_Error_Null_Batch_Data_Name) == 0)
-	{
-		return TUI_ERROR_NULL_BATCH_DATA;
-	}
 	else if (strcmp(str, kTui_Error_Null_Colors_Name) == 0)
 	{
 		return TUI_ERROR_NULL_COLORS;
@@ -709,6 +710,8 @@ const char* tuiErrorCodeGetDescription(TuiErrorCode error_code)
 		return kTui_Error_None_Description;
 	case TUI_ERROR_ALREADY_INITIALIZED:
 		return kTui_Error_Already_Initialized_Description;
+	case TUI_ERROR_BATCH_OVERFLOW:
+		return kTui_Error_Batch_Overflow_Description;
 	case TUI_ERROR_GRAPHICS_BACKEND_SPECIFIC:
 		return kTui_Error_Graphics_Backend_Specific_Description;
 	case TUI_ERROR_DANGLING_ATLAS:
@@ -751,12 +754,12 @@ const char* tuiErrorCodeGetDescription(TuiErrorCode error_code)
 		return kTui_Error_Invalid_Aspect_Ratio_Description;
 	case TUI_ERROR_INVALID_ATLAS_TYPE:
 		return kTui_Error_Invalid_Atlas_Type_Description;
-	case TUI_ERROR_INVALID_BATCH_DATA_DIMENSIONS:
-		return kTui_Error_Invalid_Batch_Data_Dimensions_Description;
-	case TUI_ERROR_INVALID_BATCH_DIMENSIONS:
-		return kTui_Error_Invalid_Batch_Dimensions_Description;
-	case TUI_ERROR_INVALID_BATCH_SETTER:
-		return kTui_Error_Invalid_Batch_Setter_Description;
+	case TUI_ERROR_INVALID_BATCH_FUNCTION:
+		return kTui_Error_Invalid_Batch_Function_Description;
+	case TUI_ERROR_INVALID_BATCH_PIXEL_DIMENSIONS:
+		return kTui_Error_Invalid_Batch_Pixel_Dimensions_Description;
+	case TUI_ERROR_INVALID_BATCH_TILE_DIMENSIONS:
+		return kTui_Error_Invalid_Batch_Tile_Dimensions_Description;
 	case TUI_ERROR_INVALID_BLEND_MODE:
 		return kTui_Error_Invalid_Blend_Mode_Description;
 	case TUI_ERROR_INVALID_BUTTON_STATE:
@@ -815,8 +818,6 @@ const char* tuiErrorCodeGetDescription(TuiErrorCode error_code)
 		return kTui_Error_Null_Atlas_Description;
 	case TUI_ERROR_NULL_BATCH:
 		return kTui_Error_Null_Batch_Description;
-	case TUI_ERROR_NULL_BATCH_DATA:
-		return kTui_Error_Null_Batch_Data_Description;
 	case TUI_ERROR_NULL_COLORS:
 		return kTui_Error_Null_Colors_Description;
 	case TUI_ERROR_NULL_CURSOR:  

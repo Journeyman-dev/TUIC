@@ -92,14 +92,14 @@ typedef struct TuiOpengl33SystemApiData
 	uint32_t BatchRenderScreenTileDimensionsUniformLocation;
 	uint32_t BatchRenderSheetTileDimensionsUniformLocation;
 	uint32_t BatchRenderSheetTileUVDimensionsUniformLocation;
-	uint32_t BatchRenderScreenspaceTileDimensionsUniformLocation;
+	uint32_t BatchRenderTileScreenspaceDimensionsUniformLocation;
 	uint32_t BatchRenderGlyphModeUniformLocation;
 	uint32_t BatchRenderColorModeUniformLocation;
 	uint32_t BatchRenderLayoutModeUniformLocation;
 	uint32_t BatchRenderAtlasTypeUniformLocation;
 	uint32_t BatchRenderPaletteChannelCountUniformLocation;
-	uint32_t BatchRenderIsLargeSparseWideUniformLocation;
-	uint32_t BatchRenderIsLargeSparseTallUniformLocation;
+	uint32_t BatchRenderHasLargeXCoordinateUniformLocation;
+	uint32_t BatchRenderHasLargeYCoordinatelUniformLocation;
 	uint32_t BatchRenderTileByteSizeUniformLocation;
 	uint32_t BatchRenderDataUniformLocation;
 	uint32_t BatchRenderFontmapUniformLocation;
@@ -107,6 +107,8 @@ typedef struct TuiOpengl33SystemApiData
 	uint32_t BatchRenderMatrixUniformLocation;
 	uint32_t BatchRenderAtlasUniformLocation;
 	uint32_t BatchRenderBlendModeUniformLocation;
+	uint32_t BatchRenderTilePixelDimensionsUniformLocation;
+	uint32_t BatchRenderViewportPixelDimensionsUniformLocation;
 	uint32_t DataBufferHandle;
 	uint32_t DataTextureHandle;
 } TuiOpengl33SystemApiData;
@@ -308,6 +310,8 @@ static inline int _GetLayoutModeUniformValue(TuiDetailFlag layout_mode)
 		return 0;
 	case TUI_DETAIL_FLAG_LAYOUT_SPARSE:
 		return 1;
+	case TUI_DETAIL_FLAG_LAYOUT_FREE:
+		return 2;
 	default:
 		return -1;
 	}
@@ -350,58 +354,8 @@ static inline int _GetBlendModeUniformValue(TuiBlendMode blend_mode)
 		return -1;
 	}
 }
-static inline TuiErrorCode _DrawBatchData(uint32_t framebuffer_handle, size_t framebuffer_width, size_t framebuffer_height, TuiAtlas atlas, TuiPalette palette, TuiDetailMode detail_mode, TuiBlendMode blend_mode, size_t tiles_wide, size_t tiles_tall, size_t sparse_index, const uint8_t* batch_data, const float* matrix)
+static inline TuiErrorCode _BindBatchBuffer(TuiSystem system, TuiOpengl33SystemApiData* system_data, size_t data_size, uint8_t* batch_data)
 {
-	TuiSystem system = tui_get_system();
-	TuiOpengl33SystemApiData* system_data = (TuiOpengl33SystemApiData*)system->ApiData;
-	TuiOpengl33AtlasApiData* atlas_data = (TuiOpengl33AtlasApiData*)atlas->ApiData;
-	TuiOpengl33PaletteApiData* palette_data = TUI_NULL;
-	if (palette != TUI_NULL)
-	{
-		palette_data = (TuiOpengl33PaletteApiData*)palette->ApiData;
-	}
-	size_t data_size = 0;
-	int is_sparse = tuiDetailHasFlag(detail_mode, TUI_DETAIL_FLAG_LAYOUT_SPARSE);
-	int glyph_mode = tuiDetailGetGlyphFlag(detail_mode);
-	int color_mode = tuiDetailGetColorFlag(detail_mode);
-	int layout_mode = tuiDetailGetLayoutFlag(detail_mode);
-	int glyph_mode_id = _GetGlyphModeUniformValue(glyph_mode);
-	int color_mode_id = _GetColorModeUniformValue(color_mode);
-	int layout_mode_id = _GetLayoutModeUniformValue(layout_mode);
-	int atlas_type_id = _GetAtlasTypeUniformValue(atlas->AtlasType);
-	int blend_mode_id = _GetBlendModeUniformValue(blend_mode);
-	if (glyph_mode_id == -1 || color_mode_id == -1 || layout_mode_id == -1 || atlas_type_id == -1 || blend_mode_id == -1)
-	{
-		return TUI_ERROR_GRAPHICS_BACKEND_SPECIFIC;
-	}
-	size_t bytes_per_tile = tuiDetailGetTileByteSize(glyph_mode, color_mode);
-	int large_sparse_wide = (tiles_wide > 256) ? 1 : 0;
-	int large_sparse_tall = (tiles_tall > 256) ? 1 : 0;
-	if (is_sparse == TUI_TRUE)
-	{
-		bytes_per_tile += (size_t)large_sparse_wide + (size_t)large_sparse_tall + 2;
-		data_size = sparse_index * bytes_per_tile;
-	}
-	else
-	{
-		data_size = tiles_wide * tiles_tall * bytes_per_tile;
-	}
-	GL_BLOCK_START();
-	GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_handle));
-	GL_CALL(glBindVertexArray(system_data->VaoHandle));
-	GL_CALL(glUseProgram(system_data->BatchRenderProgramHandle));
-	GL_CALL(glUniform2i(system_data->BatchRenderScreenTileDimensionsUniformLocation, tiles_wide, tiles_tall));
-	GL_CALL(glUniform2f(system_data->BatchRenderScreenspaceTileDimensionsUniformLocation, 1.0f / (float)tiles_wide, 1.0f / (float)tiles_tall));
-	GL_CALL(glUniform1i(system_data->BatchRenderGlyphModeUniformLocation, glyph_mode_id));
-	GL_CALL(glUniform1i(system_data->BatchRenderColorModeUniformLocation, color_mode_id));
-	GL_CALL(glUniform1i(system_data->BatchRenderLayoutModeUniformLocation, layout_mode_id));
-	GL_CALL(glUniform1i(system_data->BatchRenderAtlasTypeUniformLocation, atlas_type_id));
-	if (palette != TUI_NULL)
-	{
-		GL_CALL(glUniform1i(system_data->BatchRenderPaletteChannelCountUniformLocation, palette->ChannelCount));
-	}
-	GL_CALL(glUniform1i(system_data->BatchRenderBlendModeUniformLocation, blend_mode_id));
-	GL_CALL(glUniformMatrix4fv(system_data->BatchRenderMatrixUniformLocation, 1, GL_FALSE, matrix));
 	if (system_data->DataBufferHandle == 0)
 	{
 		GL_CALL(glGenBuffers(1, &system_data->DataBufferHandle));
@@ -414,43 +368,196 @@ static inline TuiErrorCode _DrawBatchData(uint32_t framebuffer_handle, size_t fr
 		GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, system_data->DataTextureHandle));
 		GL_CALL(glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, system_data->DataBufferHandle));
 	}
-	GL_CALL(glBindBuffer(GL_TEXTURE_BUFFER, 0));
-	GL_CALL(glActiveTexture(GL_TEXTURE0));
-	GL_CALL(glBindTexture(GL_TEXTURE_2D, atlas_data->TextureHandle));
-	if (atlas->AtlasType == TUI_ATLAS_GRID)
-	{
-		GL_CALL(glUniform2f(system_data->BatchRenderSheetTileUVDimensionsUniformLocation, 1.0f/(float)atlas->GridGlyphsWide, 1.0f/(float)atlas->GridGlyphsTall));
-		GL_CALL(glUniform2i(system_data->BatchRenderSheetTileDimensionsUniformLocation, atlas->GridGlyphsWide, atlas->GridGlyphsTall));
-	}
-	else //if (atlas->AtlasType == TUI_ATLAS_COORDS)
-	{
-		GL_CALL(glActiveTexture(GL_TEXTURE1));
-		GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, atlas_data->FontmapTextureHandle));
-	}
 	GL_CALL(glActiveTexture(GL_TEXTURE2));
 	GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, system_data->DataTextureHandle));
+	GL_CALL(glBindBuffer(GL_TEXTURE_BUFFER, 0));
+	return TUI_ERROR_NONE;
+}
+static inline TuiErrorCode _BindBatchAtlas(TuiSystem system, TuiOpengl33SystemApiData* system_data, TuiAtlas atlas, TuiOpengl33AtlasApiData* atlas_data)
+{
+	if (atlas != TUI_NULL)
+	{
+		GL_CALL(glActiveTexture(GL_TEXTURE0));
+		GL_CALL(glBindTexture(GL_TEXTURE_2D, atlas_data->TextureHandle));
+		GL_CALL(glUniform1i(system_data->BatchRenderAtlasTypeUniformLocation, _GetAtlasTypeUniformValue(atlas->AtlasType)));
+		GL_CALL(glUniform1i(system_data->BatchRenderBlendModeUniformLocation, _GetBlendModeUniformValue(atlas->BlendMode)));
+		if (atlas->AtlasType == TUI_ATLAS_GRID)
+		{
+			GL_CALL(glUniform2f(system_data->BatchRenderSheetTileUVDimensionsUniformLocation, 1.0f/(float)atlas->GridGlyphsWide, 1.0f/(float)atlas->GridGlyphsTall));
+			GL_CALL(glUniform2i(system_data->BatchRenderSheetTileDimensionsUniformLocation, atlas->GridGlyphsWide, atlas->GridGlyphsTall));
+		}
+		else //if (atlas->AtlasType == TUI_ATLAS_COORDS)
+		{
+			GL_CALL(glActiveTexture(GL_TEXTURE1));
+			GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, atlas_data->FontmapTextureHandle));
+		}
+	}
+	return TUI_ERROR_NONE;
+}
+static inline TuiErrorCode _BindBatchPalette(TuiSystem system, TuiOpengl33SystemApiData* system_data, TuiPalette palette, TuiOpengl33PaletteApiData* palette_data)
+{
+	GL_CALL(glActiveTexture(GL_TEXTURE3));
+	GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, palette_data->PaletteTextureHandle));
+	GL_CALL(glUniform1i(system_data->BatchRenderPaletteChannelCountUniformLocation, palette->ChannelCount));
+	return TUI_ERROR_NONE;
+}
+static inline TuiErrorCode _DrawBatch(uint32_t framebuffer_handle, size_t framebuffer_width, size_t framebuffer_height, TuiAtlas atlas, TuiPalette palette, TuiBatch batch, const float* matrix)
+{
+	TuiSystem system = tui_get_system();
+	TuiOpengl33SystemApiData* system_data = (TuiOpengl33SystemApiData*)system->ApiData;
+	TuiOpengl33AtlasApiData* atlas_data = TUI_NULL;
+	if (atlas != TUI_NULL)
+	{
+		atlas_data = (TuiOpengl33AtlasApiData*)atlas->ApiData;
+	}
+	TuiOpengl33PaletteApiData* palette_data = TUI_NULL;
 	if (palette != TUI_NULL)
 	{
-		GL_CALL(glActiveTexture(GL_TEXTURE3));
-		GL_CALL(glBindTexture(GL_TEXTURE_BUFFER, palette_data->PaletteTextureHandle));
+		palette_data = (TuiOpengl33PaletteApiData*)palette->ApiData;
 	}
-	GL_CALL(glViewport(0, 0, framebuffer_width, framebuffer_height));
-	if (is_sparse == TUI_FALSE)
+	TuiDetailFlag glyph_flag = tuiDetailGetGlyphFlag(batch->DetailMode);
+	TuiDetailFlag color_flag = tuiDetailGetColorFlag(batch->DetailMode);
+	TuiDetailFlag layout_flag = tuiDetailGetLayoutFlag(batch->DetailMode);
+	int glyph_mode_id = _GetGlyphModeUniformValue(glyph_flag);
+	int color_mode_id = _GetColorModeUniformValue(color_flag);
+	int layout_mode_id = _GetLayoutModeUniformValue(layout_flag);
+	GL_BLOCK_START();
+	GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_handle));
+	GL_CALL(glBindVertexArray(system_data->VaoHandle));
+	GL_CALL(glUseProgram(system_data->BatchRenderProgramHandle));
+	GL_CALL(glUniform1i(system_data->BatchRenderGlyphModeUniformLocation, glyph_mode_id));
+	GL_CALL(glUniform1i(system_data->BatchRenderColorModeUniformLocation, color_mode_id));
+	GL_CALL(glUniform1i(system_data->BatchRenderLayoutModeUniformLocation, layout_mode_id));
+	GL_CALL(glUniformMatrix4fv(system_data->BatchRenderMatrixUniformLocation, 1, GL_FALSE, matrix));
+	switch (layout_flag)
 	{
-		GL_CALL(glUniform1i(system_data->BatchRenderTileByteSizeUniformLocation, bytes_per_tile));
-		GL_CALL(glEnable(GL_BLEND));
-		GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, tiles_wide * tiles_tall * kVertsPerTile));
+	case TUI_DETAIL_FLAG_LAYOUT_FULL:
+		{
+			TuiBatchFull_s* batch_full = (TuiBatchFull_s*)batch;
+			{
+				TuiErrorCode error = _BindBatchBuffer(system, system_data, batch_full->UsedDataSize, batch_full->Data);
+				if (error != TUI_ERROR_NONE)
+				{
+					return error;
+				}
+			}
+			{
+				if (atlas != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchAtlas(system, system_data, atlas, atlas_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+
+			}
+			{
+				if (palette != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchPalette(system, system_data, palette, palette_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+
+			}
+			GL_CALL(glUniform2i(system_data->BatchRenderScreenTileDimensionsUniformLocation, batch_full->TilesWide, batch_full->TilesTall));
+			GL_CALL(glUniform2f(system_data->BatchRenderTileScreenspaceDimensionsUniformLocation, 1.0f / (float)batch_full->TilesWide, 1.0f / (float)batch_full->TilesTall));
+			GL_CALL(glUniform1i(system_data->BatchRenderTileByteSizeUniformLocation, batch_full->BytesPerTile));
+			GL_CALL(glViewport(0, 0, framebuffer_width, framebuffer_height));
+			GL_CALL(glEnable(GL_BLEND));
+			GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));		
+			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, batch_full->TilesWide * batch_full->TilesTall * kVertsPerTile));
+		}
+		break;
+	case TUI_DETAIL_FLAG_LAYOUT_SPARSE:
+		{
+			TuiBatchSparse_s* batch_sparse = (TuiBatchSparse_s*)batch;
+			{
+				TuiErrorCode error = _BindBatchBuffer(system, system_data, batch_sparse->TileCount * batch_sparse->BytesPerTile, batch_sparse->Data);
+				if (error != TUI_ERROR_NONE)
+				{
+					return error;
+				}
+			}
+			{
+				if (atlas != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchAtlas(system, system_data, atlas, atlas_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+
+			}
+			{
+				if (palette != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchPalette(system, system_data, palette, palette_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+			}
+			GL_CALL(glUniform2i(system_data->BatchRenderScreenTileDimensionsUniformLocation, batch_sparse->TilesWide, batch_sparse->TilesTall));
+			GL_CALL(glUniform2f(system_data->BatchRenderTileScreenspaceDimensionsUniformLocation, 1.0f / (float)batch_sparse->TilesWide, 1.0f / (float)batch_sparse->TilesTall));
+			GL_CALL(glUniform1i(system_data->BatchRenderTileByteSizeUniformLocation, batch_sparse->BytesPerTile));
+			GL_CALL(glUniform1i(system_data->BatchRenderHasLargeXCoordinateUniformLocation, batch_sparse->HasLargeXCoordinate));
+			GL_CALL(glUniform1i(system_data->BatchRenderHasLargeYCoordinatelUniformLocation, batch_sparse->HasLargeYCoordinate));
+			GL_CALL(glViewport(0, 0, framebuffer_width, framebuffer_height));
+			GL_CALL(glEnable(GL_BLEND));
+			GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, batch_sparse->TileCount * kVertsPerTile));
+		}
+		break;
+	case TUI_DETAIL_FLAG_LAYOUT_FREE:
+		{
+			TuiBatchFree_s* batch_free = (TuiBatchFree_s*)batch;
+			{
+				TuiErrorCode error = _BindBatchBuffer(system, system_data, batch_free->TileCount * batch_free->BytesPerTile, batch_free->Data);
+				if (error != TUI_ERROR_NONE)
+				{
+					return error;
+				}
+			}
+			{
+				if (atlas != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchAtlas(system, system_data, atlas, atlas_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+
+			}
+			{
+				if (palette != TUI_NULL)
+				{
+					TuiErrorCode error = _BindBatchPalette(system, system_data, palette, palette_data);
+					if (error != TUI_ERROR_NONE)
+					{
+						return error;
+					}
+				}
+			}
+			GL_CALL(glUniform2ui(system_data->BatchRenderViewportPixelDimensionsUniformLocation, batch_free->DrawViewportWidth, batch_free->DrawViewportHeight));
+			GL_CALL(glUniform2f(system_data->BatchRenderTileScreenspaceDimensionsUniformLocation, (float)batch_free->TilePixelWidth / (float)batch_free->DrawViewportWidth, (float)batch_free->TilePixelHeight / (float)batch_free->DrawViewportHeight));
+			GL_CALL(glUniform2ui(system_data->BatchRenderTilePixelDimensionsUniformLocation, batch_free->TilePixelWidth, batch_free->TilePixelHeight));
+			GL_CALL(glUniform1i(system_data->BatchRenderTileByteSizeUniformLocation, batch_free->BytesPerTile));
+			GL_CALL(glViewport(0, 0, framebuffer_width, framebuffer_height));
+			GL_CALL(glEnable(GL_BLEND));
+			GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+			GL_CALL(glDrawArrays(GL_TRIANGLES, 0, batch_free->TileCount * kVertsPerTile));
+		}
+		break;
 	}
-	else
-	{
-		GL_CALL(glUniform1i(system_data->BatchRenderTileByteSizeUniformLocation, bytes_per_tile));
-		GL_CALL(glUniform1i(system_data->BatchRenderIsLargeSparseWideUniformLocation, large_sparse_wide));
-		GL_CALL(glUniform1i(system_data->BatchRenderIsLargeSparseTallUniformLocation, large_sparse_tall));
-		GL_CALL(glEnable(GL_BLEND));
-		GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		GL_CALL(glDrawArrays(GL_TRIANGLES, 0, sparse_index * kVertsPerTile));
-	}
+	GL_CALL(glBindVertexArray(0));
+	GL_CALL(glUseProgram(0));
 	return TUI_ERROR_NONE;
 }
 static inline TuiErrorCode _RenderTextureToFramebuffer(uint32_t texture_handle, uint32_t framebuffer_handle, size_t viewport_width, size_t viewport_height, int left_x, int right_x, int top_y, int bottom_y, uint32_t override_vao)
@@ -525,14 +632,14 @@ TuiErrorCode tuiSystemCreate_Opengl33()
 	system_data->BatchRenderScreenTileDimensionsUniformLocation = 0;
 	system_data->BatchRenderSheetTileDimensionsUniformLocation = 0;
 	system_data->BatchRenderSheetTileUVDimensionsUniformLocation = 0;
-	system_data->BatchRenderScreenspaceTileDimensionsUniformLocation = 0;
+	system_data->BatchRenderTileScreenspaceDimensionsUniformLocation = 0;
 	system_data->BatchRenderGlyphModeUniformLocation = 0;
 	system_data->BatchRenderColorModeUniformLocation = 0;
 	system_data->BatchRenderLayoutModeUniformLocation = 0;
 	system_data->BatchRenderAtlasTypeUniformLocation = 0;
 	system_data->BatchRenderPaletteChannelCountUniformLocation = 0;
-	system_data->BatchRenderIsLargeSparseWideUniformLocation = 0;
-	system_data->BatchRenderIsLargeSparseTallUniformLocation = 0;
+	system_data->BatchRenderHasLargeXCoordinateUniformLocation = 0;
+	system_data->BatchRenderHasLargeYCoordinatelUniformLocation = 0;
 	system_data->BatchRenderTileByteSizeUniformLocation = 0;
 	system_data->BatchRenderDataUniformLocation = 0;
 	system_data->BatchRenderFontmapUniformLocation = 0;
@@ -540,6 +647,8 @@ TuiErrorCode tuiSystemCreate_Opengl33()
 	system_data->BatchRenderMatrixUniformLocation = 0;
 	system_data->BatchRenderAtlasUniformLocation = 0;
 	system_data->BatchRenderBlendModeUniformLocation = 0;
+	system_data->BatchRenderTilePixelDimensionsUniformLocation = 0;
+	system_data->BatchRenderViewportPixelDimensionsUniformLocation = 0;
 	system_data->DataBufferHandle = 0;
 	system_data->DataTextureHandle = 0;
 	GL_BLOCK_START();
@@ -566,14 +675,14 @@ TuiErrorCode tuiSystemCreate_Opengl33()
 	GL_CALL(system_data->BatchRenderScreenTileDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "ScreenTileDimensions"));
 	GL_CALL(system_data->BatchRenderSheetTileDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "SheetTileDimensions"));
 	GL_CALL(system_data->BatchRenderSheetTileUVDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "SheetTileUVDimensions"));
-	GL_CALL(system_data->BatchRenderScreenspaceTileDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "ScreenspaceTileDimensions"));
+	GL_CALL(system_data->BatchRenderTileScreenspaceDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "TileScreenspaceDimensions"));
 	GL_CALL(system_data->BatchRenderGlyphModeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "GlyphMode"));
 	GL_CALL(system_data->BatchRenderColorModeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "ColorMode"));
 	GL_CALL(system_data->BatchRenderLayoutModeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "LayoutMode"));
 	GL_CALL(system_data->BatchRenderAtlasTypeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "AtlasType"));
 	GL_CALL(system_data->BatchRenderPaletteChannelCountUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "PaletteChannelCount"));
-	GL_CALL(system_data->BatchRenderIsLargeSparseWideUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "IsLargeSparseWide"));
-	GL_CALL(system_data->BatchRenderIsLargeSparseTallUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "IsLargeSparseTall"));
+	GL_CALL(system_data->BatchRenderHasLargeXCoordinateUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "HasLargeXCoordinate"));
+	GL_CALL(system_data->BatchRenderHasLargeYCoordinatelUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "HasLargeYCoordinate"));
 	GL_CALL(system_data->BatchRenderTileByteSizeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "TileByteSize"));
 	GL_CALL(system_data->BatchRenderDataUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "Data"));
 	GL_CALL(system_data->BatchRenderFontmapUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "Fontmap"));
@@ -581,6 +690,8 @@ TuiErrorCode tuiSystemCreate_Opengl33()
 	GL_CALL(system_data->BatchRenderMatrixUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "Matrix"));
 	GL_CALL(system_data->BatchRenderAtlasUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "Atlas"));
 	GL_CALL(system_data->BatchRenderBlendModeUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "BlendMode"));
+	GL_CALL(system_data->BatchRenderTilePixelDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "TilePixelDimensions"));
+	GL_CALL(system_data->BatchRenderViewportPixelDimensionsUniformLocation = glGetUniformLocation(system_data->BatchRenderProgramHandle, "ViewportPixelDimensions"));
 	GL_CALL(glUseProgram(system_data->BatchRenderProgramHandle));
 	GL_CALL(glUniform1i(system_data->BatchRenderAtlasUniformLocation, 0));
 	GL_CALL(glUniform1i(system_data->BatchRenderFontmapUniformLocation, 1));
@@ -752,7 +863,7 @@ TuiErrorCode tuiWindowClearColor_Opengl33(TuiWindow window, uint8_t r, uint8_t g
 	GL_CALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	return TUI_ERROR_NONE;
 }
-TuiErrorCode tuiWindowDrawBatchData_Opengl33(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiDetailMode detail_mode, size_t tiles_wide, size_t tiles_tall, size_t sparse_index, const uint8_t* batch_data, int left_x, int right_x, int top_y, int bottom_y)
+TuiErrorCode tuiWindowDrawBatch_Opengl33(TuiWindow window, TuiAtlas atlas, TuiPalette palette, TuiBatch batch, int left_x, int right_x, int top_y, int bottom_y)
 {
 	TuiSystem system = tui_get_system();
 	TuiOpengl33SystemApiData* system_data = (TuiOpengl33SystemApiData*)system->ApiData;
@@ -766,7 +877,7 @@ TuiErrorCode tuiWindowDrawBatchData_Opengl33(TuiWindow window, TuiAtlas atlas, T
 	{
 		return glfw_error;
 	}
-	return _DrawBatchData(window_data->FramebufferHandle, window->FramebufferPixelWidth, window->FramebufferPixelHeight, atlas, palette, detail_mode, atlas->BlendMode, tiles_wide, tiles_tall, sparse_index, batch_data, matrix);
+	return _DrawBatch(window_data->FramebufferHandle, window->FramebufferPixelWidth, window->FramebufferPixelHeight, atlas, palette, batch, matrix);
 }
 TuiErrorCode tuiWindowDrawPanel_Opengl33(TuiWindow window, TuiPanel panel, int left_x, int right_x, int top_y, int bottom_y)
 {
@@ -1028,7 +1139,7 @@ TuiErrorCode tuiPanelDestroy_Opengl33(TuiPanel panel)
 	tuiFree(panel_data);
 	return TUI_ERROR_NONE;
 }
-TuiErrorCode tuiPanelDrawBatchData_Opengl33(TuiPanel panel, TuiAtlas atlas, TuiPalette palette, TuiDetailMode detail_mode, size_t tiles_wide, size_t tiles_tall, size_t sparse_index, const uint8_t* batch_data, int left_x, int right_x, int top_y, int bottom_y)
+TuiErrorCode tuiPanelDrawBatch_Opengl33(TuiPanel panel, TuiAtlas atlas, TuiPalette palette, TuiBatch batch, int left_x, int right_x, int top_y, int bottom_y)
 {
 	TuiSystem system = tui_get_system();
 	TuiOpengl33SystemApiData* system_data = (TuiOpengl33SystemApiData*)system->ApiData;
@@ -1042,7 +1153,7 @@ TuiErrorCode tuiPanelDrawBatchData_Opengl33(TuiPanel panel, TuiAtlas atlas, TuiP
 	{
 		return glfw_error;
 	}
-	return _DrawBatchData(panel_data->FramebufferHandle, panel->PixelWidth, panel->PixelHeight, atlas, palette, detail_mode, atlas->BlendMode, tiles_wide, tiles_tall, sparse_index, batch_data, matrix);
+	return _DrawBatch(panel_data->FramebufferHandle, panel->PixelWidth, panel->PixelHeight, atlas, palette, batch, matrix);
 }
 TuiErrorCode tuiPanelGetPixels_Opengl33(TuiPanel panel, size_t* pixel_width, size_t* pixel_height, uint8_t** pixel_ptr)
 {

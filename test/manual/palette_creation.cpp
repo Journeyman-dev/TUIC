@@ -36,7 +36,7 @@ int main()
     tuiImageDestroy(codepage);
     codepage = TUI_NULL;
 
-    TuiBatch batch = tuiBatchCreate(TUI_DETAIL_MODE_G8_C4_FULL, 16, 16);
+    TuiBatch batch = tuiBatchCreateFull(TUI_DETAIL_MODE_G8_C4_FULL, 16, 16, 0);
     {
         uint8_t glyph_id = 0;
         for (int tile_y = 0; tile_y < 16; tile_y++)

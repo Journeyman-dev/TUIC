@@ -96,13 +96,17 @@ typedef enum TuiDetailFlag
 	 */
 	TUI_DETAIL_FLAG_COLOR_32NBG = (1 << 13),
 	/*!
-	 * @brief TUI detail mode color flag for full batches of tiles without increased batch size for coordinate information. This is most optimal for rendering in situations where almost all tiles are updated every frame.
+	 * @brief TUI detail mode layout flag for full batches of tiles without increased batch size for coordinate information. This is most optimal for rendering in situations where almost all tiles are updated every frame.
 	 */
 	TUI_DETAIL_FLAG_LAYOUT_FULL = (1 << 14),
 	/*!
-	 * @brief TUI detail mode color flag for rendering tiles as needed instead of every tile every frame. This is most optimal for rendering in situations where few tiles are updated every frame.
+	 * @brief TUI detail mode layout flag for rendering tiles as needed instead of every tile every frame. This is most optimal for rendering in situations where few tiles are updated every frame.
 	 */
 	TUI_DETAIL_FLAG_LAYOUT_SPARSE = (1 << 15),
+	/*!
+	 * @brief TUI detail mode layout flag for renderint tiles at pixel positions on the screen, independently of a grid.
+	 */
+	TUI_DETAIL_FLAG_LAYOUT_FREE = (1 << 16),
 	/*!
 	 * @brief All glyph detail bitflags.
 	 */
@@ -116,7 +120,7 @@ typedef enum TuiDetailFlag
 	/*!
 	 * @brief All layout detail bitflags.
 	 */
-	TUI_DETAIL_FLAG_LAYOUT_BITS = (TUI_DETAIL_FLAG_LAYOUT_FULL | TUI_DETAIL_FLAG_LAYOUT_SPARSE)
+	TUI_DETAIL_FLAG_LAYOUT_BITS = (TUI_DETAIL_FLAG_LAYOUT_FULL | TUI_DETAIL_FLAG_LAYOUT_SPARSE | TUI_DETAIL_FLAG_LAYOUT_FREE)
 } TuiDetailFlag;
 
 
@@ -125,7 +129,7 @@ typedef enum TuiDetailFlag
  * Constant string names of each detali flag.
  *  @{ */
  /*!
-  * @brief String name of @ref TUI_DETAIL_FLAG_G0.
+  * @brief String name of @ref TUI_DETAIL_FLAG_GLYPH_0.
   */
 extern const char* kTui_Detail_Flag_G0_Name;
 /*!
@@ -188,6 +192,10 @@ extern const char* kTui_Detail_Flag_Full_Name;
  * @brief String name of @ref TUI_DETAIL_FLAG_LAYOUT_SPARSE.
  */
 extern const char* kTui_Detail_Flag_Sparse_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_FLAG_LAYOUT_FREE.
+ */
+extern const char* kTui_Detail_Flag_Free_Name;
 /*! @} */
 
 

@@ -65,7 +65,7 @@ int main()
 
     TuiPalette palette = tuiPaletteCreateXterm(256);
 
-    TuiBatch batch = tuiBatchCreate(TUI_DETAIL_MODE_G8_C4_FULL, 16, 16);
+    TuiBatch batch = tuiBatchCreateFull(TUI_DETAIL_MODE_G8_C4_FULL, 16, 16, 0);
     {
         uint8_t glyph_id = 0;
         for (int tile_y = 0; tile_y < 16; tile_y++)
@@ -109,16 +109,6 @@ int main()
     tuiWindowClearColor(window, 0, 0, 0, 255);
     tuiWindowDrawBatchTransformed(window, atlas, palette, batch, 0, 128, 0, 128);
     printf("drawing TuiBatch with transform...\n");
-    frame(window);
-
-    tuiWindowClearColor(window, 0, 0, 0, 255);
-    tuiWindowDrawBatchData(window, atlas, palette, tuiBatchGetDetail(batch), tuiBatchGetTilesWide(batch), tuiBatchGetTilesTall(batch), 0, tuiBatchGetData(batch));
-    printf("drawing batch data...\n");
-    frame(window);
-
-    tuiWindowClearColor(window, 0, 0, 0, 255);
-    tuiWindowDrawBatchDataTransformed(window, atlas, palette, tuiBatchGetDetail(batch), tuiBatchGetTilesWide(batch), tuiBatchGetTilesTall(batch), 0, tuiBatchGetData(batch), 0, 128, 0, 128);
-    printf("drawing batch data with transform...\n");
     frame(window);
 
     tuiWindowClearColor(window, 0, 0, 0, 255);

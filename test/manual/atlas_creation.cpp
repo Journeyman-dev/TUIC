@@ -112,7 +112,7 @@ int main()
     TuiDetailMode detail_mode = TUI_DETAIL_MODE_G8_C4_FULL;
     const int batch_tiles_wide = 16;
     const int batch_tiles_tall = 16;
-    TuiBatch batch = tuiBatchCreate(detail_mode, batch_tiles_wide, batch_tiles_tall);
+    TuiBatch batch = tuiBatchCreateFull(detail_mode, batch_tiles_wide, batch_tiles_tall, 0);
     {
         uint8_t glyph_id = 0;
         uint8_t foreground_color = 15;

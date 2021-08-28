@@ -9,7 +9,23 @@
 
 TuiBatch GetTestPatternBatch(TuiDetailMode detail_mode)
 {
-	TuiBatch batch = tuiBatchCreate(detail_mode, TEST_DIMENSIONS, TEST_DIMENSIONS);
+	TuiBatch batch = TUI_NULL;
+	TuiDetailFlag detail_flag = tuiDetailGetLayoutFlag(detail_mode);
+	switch (detail_flag)
+	{
+	case TUI_DETAIL_FLAG_LAYOUT_FULL:
+		batch = tuiBatchCreateFull(detail_mode, TEST_DIMENSIONS, TEST_DIMENSIONS, 0);
+		break;
+	case TUI_DETAIL_FLAG_LAYOUT_SPARSE:
+		batch = tuiBatchCreateSparse(detail_mode, TEST_DIMENSIONS, TEST_DIMENSIONS, TUI_TRUE, 0);
+		break;
+	case TUI_DETAIL_FLAG_LAYOUT_FREE:
+		batch = tuiBatchCreateFree(detail_mode, 8, 8, TEST_DIMENSIONS, TEST_DIMENSIONS, TEST_DIMENSIONS * TEST_DIMENSIONS, 0);
+		break;
+	default:
+		break;
+	}
+	
 	for (int x = 0; x < TEST_DIMENSIONS; x++)
 	{
 		for (int y = 0; y < TEST_DIMENSIONS; y++)

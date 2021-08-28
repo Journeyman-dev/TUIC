@@ -241,7 +241,107 @@ typedef enum TuiDetailMode
 	/*!
 	 * @brief TUI detail mode for sparse 16 bit glyph batches with a 32 bit background color (RGBA full color).
 	 */
-	TUI_DETAIL_MODE_G16_C32NFG_SPARSE =		(TUI_DETAIL_FLAG_GLYPH_16		| TUI_DETAIL_FLAG_COLOR_32NFG		| TUI_DETAIL_FLAG_LAYOUT_SPARSE)
+	TUI_DETAIL_MODE_G16_C32NFG_SPARSE =		(TUI_DETAIL_FLAG_GLYPH_16		| TUI_DETAIL_FLAG_COLOR_32NFG		| TUI_DETAIL_FLAG_LAYOUT_SPARSE),
+	/*!
+	 * @brief TUI detail mode for free no glyph batches with 8 bit colors (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G0_C8NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_0 | TUI_DETAIL_FLAG_COLOR_8NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free no glyph batches with 24 bit colors (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G0_C24NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_0 | TUI_DETAIL_FLAG_COLOR_24NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free no glyph batches with 32 bit colors (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G0_C32NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_0 | TUI_DETAIL_FLAG_COLOR_32NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with no colors.
+	 */
+	TUI_DETAIL_MODE_G8_C0_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_0 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with 4 bit colors (16 color palette).
+	 */
+	TUI_DETAIL_MODE_G8_C4_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_4 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with 8 bit colors (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G8_C8_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_8 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with an 8 bit foreground color (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G8_C8NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_8NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with an 8 bit background color (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G8_C8NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_8NFG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with an 24 bit colors (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G8_C24_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_24 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with a 24 bit foreground color (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G8_C24NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_24NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with a 24 bit background color (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G8_C24NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_24NFG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with an 32 bit colors (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G8_C32_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_32 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with a 32 bit foreground color (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G8_C32NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_32NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 8 bit glyph batches with a 32 bit background color (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G8_C32NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_32NFG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with no colors.
+	 */
+	TUI_DETAIL_MODE_G16_C0_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_0 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with 4 bit colors (16 color palette).
+	 */
+	TUI_DETAIL_MODE_G16_C4_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_4 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with 8 bit colors (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G16_C8_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_8 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with an 8 bit foreground color (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G16_C8NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_8NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with an 8 bit background color (256 color palette).
+	 */
+	TUI_DETAIL_MODE_G16_C8NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_8NFG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with an 24 bit colors (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G16_C24_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_24 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with a 24 bit foreground color (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G16_C24NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_24NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with a 24 bit background color (RGB full color).
+	 */
+	TUI_DETAIL_MODE_G16_C24NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_24NFG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with an 24 bit colors (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G16_C32_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_32 | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with a 32 bit foreground color (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G16_C32NBG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_32NBG | TUI_DETAIL_FLAG_LAYOUT_FREE),
+	/*!
+	 * @brief TUI detail mode for free 16 bit glyph batches with a 32 bit background color (RGBA full color).
+	 */
+	TUI_DETAIL_MODE_G16_C32NFG_FREE = (TUI_DETAIL_FLAG_GLYPH_16 | TUI_DETAIL_FLAG_COLOR_32NFG | TUI_DETAIL_FLAG_LAYOUT_FREE)
 } TuiDetailMode;
 
 
@@ -554,6 +654,106 @@ extern const char* kTui_Detail_G16_C32NBG_Sparse_Name;
  * @brief String name of @ref TUI_DETAIL_MODE_G16_C32NFG_SPARSE.
  */
 extern const char* kTui_Detail_G16_C32NFG_Sparse_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_G0_C8NBG_FREE.
+ */
+extern const char* kTui_Detail_G0_C8NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_G0_C24NBG_FREE.
+ */
+extern const char* kTui_Detail_G0_C24NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_G0_C32NBG_FREE.
+ */
+extern const char* kTui_Detail_G0_C32NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C0_FREE.
+ */
+extern const char* kTui_Detail_G8_C0_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C4_FREE.
+ */
+extern const char* kTui_Detail_G8_C4_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C8_FREE.
+ */
+extern const char* kTui_Detail_G8_C8_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C8NBG_FREE.
+ */
+extern const char* kTui_Detail_G8_C8NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C8NFG_FREE.
+ */
+extern const char* kTui_Detail_G8_C8NFG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C24_FREE.
+ */
+extern const char* kTui_Detail_G8_C24_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C24NBG_FREE.
+ */
+extern const char* kTui_Detail_G8_C24NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C24NFG_FREE.
+ */
+extern const char* kTui_Detail_G8_C24NFG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C32_FREE.
+ */
+extern const char* kTui_Detail_G8_C32_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C32NBG_FREE.
+ */
+extern const char* kTui_Detail_G8_C32NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G8_C32NFG_FREE.
+ */
+extern const char* kTui_Detail_G8_C32NFG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C0_FREE.
+ */
+extern const char* kTui_Detail_G16_C0_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C4_FREE.
+ */
+extern const char* kTui_Detail_G16_C4_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C8_FREE.
+ */
+extern const char* kTui_Detail_G16_C8_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C8NBG_FREE.
+ */
+extern const char* kTui_Detail_G16_C8NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C8NFG_FREE.
+ */
+extern const char* kTui_Detail_G16_C8NFG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C24_FREE.
+ */
+extern const char* kTui_Detail_G16_C24_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C24NBG_FREE.
+ */
+extern const char* kTui_Detail_G16_C24NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C24NFG_FREE.
+ */
+extern const char* kTui_Detail_G16_C24NFG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C32_FREE.
+ */
+extern const char* kTui_Detail_G16_C32_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C32NBG_FREE.
+ */
+extern const char* kTui_Detail_G16_C32NBG_Free_Name;
+/*!
+ * @brief String name of @ref TUI_DETAIL_MODE_G16_C32NFG_FREE.
+ */
+extern const char* kTui_Detail_G16_C32NFG_Free_Name;
 /* @) */
 
 
@@ -634,6 +834,21 @@ size_t tuiDetailGetTileByteSize(TuiDetailFlag glyph_flag, TuiDetailFlag color_fl
  * @thread_safety This function does not access memory in ways that could cause a data race, so it is thread safe.
  */
 TuiBoolean tuiDetailHasPalette(TuiDetailMode detail_mode);
+/*!
+ * @brief Get if the @ref TuiDetailMode requires a @ref TuiAtlas.
+ *
+ * @param detail_mode The @ref TuiDetailMode.
+ *
+ * @returns The @ref TuiBoolean result. If detail_mode is a requires a @ref TuiAtlas for rendering batch data, it
+ * returns @ref TUI_TRUE. Otherwise, it returns @ref TUI_FALSE.
+ *
+ * @errors This function can haves no errors.
+ *
+ * @requirements This function can be called freely, even if TUIC is not currently initialized.
+ *
+ * @thread_safety This function does not access memory in ways that could cause a data race, so it is thread safe.
+ */
+TuiBoolean tuiDetailHasAtlas(TuiDetailMode detail_mode);
 /*!
  * @brief Determine if a @ref TuiDetailMode enum is valid.
  *

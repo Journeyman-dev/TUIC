@@ -371,7 +371,7 @@ typedef enum TuiKeyboardKey
 	 * \brief The F14 key.
 	 */
 	TUIK_F14               = 303,
-	/*
+	/*!
 	 * \brief The F15 key.
 	 */
 	TUIK_F15               = 304,
@@ -553,7 +553,7 @@ extern const char* kTuik_Slash_Name;
  */
 extern const char* kTuik_0_Name;
 /*!
- * @brief String name of @ref TUIK__1.
+ * @brief String name of @ref TUIK_1.
  */
 extern const char* kTuik_1_Name;
 /*!

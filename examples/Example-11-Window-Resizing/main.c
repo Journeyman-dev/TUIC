@@ -171,7 +171,7 @@ int main()
 
     /* Create the batch. */
     TuiDetailMode detail_mode = TUI_DETAIL_MODE_G8_C4_FULL; // same as (TUI_DETAIL_FLAG_GLYPH_8 | TUI_DETAIL_FLAG_COLOR_4 | TUI_DETAIL_FLAG_LAYOUT_FULL)
-    TuiBatch batch = tuiBatchCreate(detail_mode, tiles_wide, tiles_tall);
+    TuiBatch batch = tuiBatchCreateFull(detail_mode, tiles_wide, tiles_tall, 0);
     window_user_pointer.batch = batch;
 
     /* Set the batch data. */
@@ -187,7 +187,7 @@ int main()
     /* Create the window. */
     TuiWindowCreateInfo window_create_info = tuiWindowCreateInfo();
     window_create_info.resizable = TUI_TRUE;
-    const char* window_title = "Example 10";
+    const char* window_title = "Example 11";
     TuiWindow window = tuiWindowCreate(kWindowWidth, kWindowHeight, window_title, &window_create_info);
     window_user_pointer.window = window;
 

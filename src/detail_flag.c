@@ -56,6 +56,8 @@ const char* kTui_Detail_Flag_Full_Name = TO_STRING(TUI_DETAIL_FLAG_LAYOUT_FULL);
 
 const char* kTui_Detail_Flag_Sparse_Name = TO_STRING(TUI_DETAIL_FLAG_LAYOUT_SPARSE);
 
+const char* kTui_Detail_Flag_Free_Name = TO_STRING(TUI_DETAIL_FLAG_LAYOUT_FREE);
+
 TuiBoolean tuiDetailFlagIsValid(TuiDetailFlag detail_flag)
 {
 	return
@@ -74,7 +76,8 @@ TuiBoolean tuiDetailFlagIsValid(TuiDetailFlag detail_flag)
 		(detail_flag == TUI_DETAIL_FLAG_COLOR_32NBG) ||
 		(detail_flag == TUI_DETAIL_FLAG_COLOR_32NFG) ||
 		(detail_flag == TUI_DETAIL_FLAG_LAYOUT_FULL) ||
-		(detail_flag == TUI_DETAIL_FLAG_LAYOUT_SPARSE);
+		(detail_flag == TUI_DETAIL_FLAG_LAYOUT_SPARSE) ||
+		(detail_flag == TUI_DETAIL_FLAG_LAYOUT_FREE);
 }
 
 const char* tuiDetailFlagToString(TuiDetailFlag detail_flag)
@@ -113,6 +116,8 @@ const char* tuiDetailFlagToString(TuiDetailFlag detail_flag)
 		return kTui_Detail_Flag_Full_Name;
 	case TUI_DETAIL_FLAG_LAYOUT_SPARSE:
 		return kTui_Detail_Flag_Sparse_Name;
+	case TUI_DETAIL_FLAG_LAYOUT_FREE:
+		return kTui_Detail_Flag_Free_Name;
 	default:
 		return TUI_NULL;
 	}
@@ -183,6 +188,10 @@ TuiDetailFlag tuiStringToDetailFlag(const char* string)
 	else if (strcmp(string, kTui_Detail_Flag_Sparse_Name) == 0)
 	{
 		return TUI_DETAIL_FLAG_LAYOUT_SPARSE;
+	}
+	else if (strcmp(string, kTui_Detail_Flag_Free_Name) == 0)
+	{
+		return TUI_DETAIL_FLAG_LAYOUT_FREE;
 	}
 	return TUI_DETAIL_FLAG_INVALID;
 }

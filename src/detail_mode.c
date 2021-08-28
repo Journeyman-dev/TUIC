@@ -176,61 +176,136 @@ const char* kTui_Detail_G16_C32NBG_Sparse_Name = TO_STRING(TUI_DETAIL_MODE_G16_C
 
 const char* kTui_Detail_G16_C32NFG_Sparse_Name = TO_STRING(TUI_DETAIL_MODE_G16_C32NFG_SPARSE);
 
+const char* kTui_Detail_G0_C8NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G0_C8NBG_FREE);
+
+const char* kTui_Detail_G0_C24NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G0_C24NBG_FREE);
+
+const char* kTui_Detail_G0_C32NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G0_C32NBG_FREE);
+
+const char* kTui_Detail_G8_C0_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C0_FREE);
+
+const char* kTui_Detail_G8_C4_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C4_FREE);
+
+const char* kTui_Detail_G8_C8_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C8_FREE);
+
+const char* kTui_Detail_G8_C8NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C8NBG_FREE);
+
+const char* kTui_Detail_G8_C8NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C8NFG_FREE);
+
+const char* kTui_Detail_G8_C24_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C24_FREE);
+
+const char* kTui_Detail_G8_C24NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C24NBG_FREE);
+
+const char* kTui_Detail_G8_C24NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C24NFG_FREE);
+
+const char* kTui_Detail_G8_C32_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C32_FREE);
+
+const char* kTui_Detail_G8_C32NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C32NBG_FREE);
+
+const char* kTui_Detail_G8_C32NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G8_C32NFG_FREE);
+
+const char* kTui_Detail_G16_C0_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C0_FREE);
+
+const char* kTui_Detail_G16_C4_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C4_FREE);
+
+const char* kTui_Detail_G16_C8_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C8_FREE);
+
+const char* kTui_Detail_G16_C8NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C8NBG_FREE);
+
+const char* kTui_Detail_G16_C8NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C8NFG_FREE);
+
+const char* kTui_Detail_G16_C24_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C24_FREE);
+
+const char* kTui_Detail_G16_C24NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C24NBG_FREE);
+
+const char* kTui_Detail_G16_C24NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C24NFG_FREE);
+
+const char* kTui_Detail_G16_C32_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C32_FREE);
+
+const char* kTui_Detail_G16_C32NBG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C32NBG_FREE);
+
+const char* kTui_Detail_G16_C32NFG_Free_Name = TO_STRING(TUI_DETAIL_MODE_G16_C32NFG_FREE);
+
 TuiBoolean tuiDetailIsValid(TuiDetailMode detail_mode)
 {
-if (
-	(detail_mode == TUI_DETAIL_MODE_G0_C8NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G0_C24NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G0_C32NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C0_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C4_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C0_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C4_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32NBG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32NFG_FULL) ||
-	(detail_mode == TUI_DETAIL_MODE_G0_C8NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G0_C24NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G0_C32NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C0_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C4_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C8NFG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C24NFG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G8_C32NFG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C0_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C4_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C8NFG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C24NFG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32NBG_SPARSE) ||
-	(detail_mode == TUI_DETAIL_MODE_G16_C32NFG_SPARSE)
+	if (
+		(detail_mode == TUI_DETAIL_MODE_G0_C8NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C24NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C32NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C0_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C4_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C0_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C4_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NBG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NFG_FULL) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C8NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C24NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C32NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C0_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C4_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C0_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C4_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NBG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NFG_SPARSE) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C8NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C24NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G0_C32NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C0_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C4_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C8NFG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C24NFG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G8_C32NFG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C0_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C4_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C8NFG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C24NFG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NBG_FREE) ||
+		(detail_mode == TUI_DETAIL_MODE_G16_C32NFG_FREE)
 	)
-{
+	{
 	return TUI_TRUE;
 }
 return TUI_FALSE;
@@ -373,6 +448,18 @@ TuiBoolean tuiDetailHasPalette(TuiDetailMode detail_mode)
 	}
 }
 
+TuiBoolean tuiDetailHasAtlas(TuiDetailMode detail_mode)
+{
+	if (tuiDetailHasFlag(detail_mode, TUI_DETAIL_FLAG_GLYPH_0) == TUI_FALSE)
+	{
+		return TUI_FALSE;
+	}
+	else
+	{
+		return TUI_TRUE;
+	}
+}
+
 const char* tuiDetailModeToString(TuiDetailMode detail_mode)
 {
 	switch (detail_mode)
@@ -477,6 +564,56 @@ const char* tuiDetailModeToString(TuiDetailMode detail_mode)
 		return kTui_Detail_G16_C32NBG_Sparse_Name;
 	case TUI_DETAIL_MODE_G16_C32NFG_SPARSE:
 		return kTui_Detail_G16_C32NFG_Sparse_Name;
+	case TUI_DETAIL_MODE_G0_C8NBG_FREE:
+		return kTui_Detail_G0_C8NBG_Free_Name;
+	case TUI_DETAIL_MODE_G0_C24NBG_FREE:
+		return kTui_Detail_G0_C24NBG_Free_Name;
+	case TUI_DETAIL_MODE_G0_C32NBG_FREE:
+		return kTui_Detail_G0_C32NBG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C0_FREE:
+		return kTui_Detail_G8_C0_Free_Name;
+	case TUI_DETAIL_MODE_G8_C4_FREE:
+		return kTui_Detail_G8_C4_Free_Name;
+	case TUI_DETAIL_MODE_G8_C8_FREE:
+		return kTui_Detail_G8_C8_Free_Name;
+	case TUI_DETAIL_MODE_G8_C8NBG_FREE:
+		return kTui_Detail_G8_C8NBG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C8NFG_FREE:
+		return kTui_Detail_G8_C8NFG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C24_FREE:
+		return kTui_Detail_G8_C24_Free_Name;
+	case TUI_DETAIL_MODE_G8_C24NBG_FREE:
+		return kTui_Detail_G8_C24NBG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C24NFG_FREE:
+		return kTui_Detail_G8_C24NFG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C32_FREE:
+		return kTui_Detail_G8_C32_Free_Name;
+	case TUI_DETAIL_MODE_G8_C32NBG_FREE:
+		return kTui_Detail_G8_C32NBG_Free_Name;
+	case TUI_DETAIL_MODE_G8_C32NFG_FREE:
+		return kTui_Detail_G8_C32NFG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C0_FREE:
+		return kTui_Detail_G16_C0_Free_Name;
+	case TUI_DETAIL_MODE_G16_C4_FREE:
+		return kTui_Detail_G16_C4_Free_Name;
+	case TUI_DETAIL_MODE_G16_C8_FREE:
+		return kTui_Detail_G16_C8_Free_Name;
+	case TUI_DETAIL_MODE_G16_C8NBG_FREE:
+		return kTui_Detail_G16_C8NBG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C8NFG_FREE:
+		return kTui_Detail_G16_C8NFG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C24_FREE:
+		return kTui_Detail_G16_C24_Free_Name;
+	case TUI_DETAIL_MODE_G16_C24NBG_FREE:
+		return kTui_Detail_G16_C24NBG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C24NFG_FREE:
+		return kTui_Detail_G16_C24NFG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C32_FREE:
+		return kTui_Detail_G16_C32_Free_Name;
+	case TUI_DETAIL_MODE_G16_C32NBG_FREE:
+		return kTui_Detail_G16_C32NBG_Free_Name;
+	case TUI_DETAIL_MODE_G16_C32NFG_FREE:
+		return kTui_Detail_G16_C32NFG_Free_Name;
 	default:
 		return TUI_NULL;
 	}
@@ -683,6 +820,106 @@ TuiDetailMode tuiStringToDetailMode(const char* string)
 	else if (strcmp(string, kTui_Detail_G16_C32NFG_Sparse_Name) == 0)
 	{
 		return TUI_DETAIL_MODE_G16_C32NFG_SPARSE;
+	}
+	else if (strcmp(string, kTui_Detail_G0_C8NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G0_C8NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G0_C24NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C0_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G0_C32NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G0_C32NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C0_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C0_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C4_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C4_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C8_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C8_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C8NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C8NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C8NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C8NFG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C24_Free_Name) == 0)
+	{
+	return TUI_DETAIL_MODE_G8_C24_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C24NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C24NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C24NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C24NFG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C32_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C32_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C32NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C32NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G8_C32NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G8_C32NFG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C0_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C0_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C4_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C4_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C8_Free_Name) == 0)
+	{
+	return TUI_DETAIL_MODE_G16_C8_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C8NBG_Free_Name) == 0)
+	{
+	return TUI_DETAIL_MODE_G16_C8NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C8NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C8NFG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C24_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C24_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C24NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C24NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C24NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C24NFG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C32_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C32_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C32NBG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C32NBG_FREE;
+	}
+	else if (strcmp(string, kTui_Detail_G16_C32NFG_Free_Name) == 0)
+	{
+		return TUI_DETAIL_MODE_G16_C32NFG_FREE;
 	}
 	return TUI_DETAIL_MODE_INVALID;
 }
